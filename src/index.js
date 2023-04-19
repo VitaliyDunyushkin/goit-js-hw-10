@@ -4,7 +4,6 @@ import { Notify } from 'notiflix/build/notiflix-notify-aio';
 import { fetchCountries } from './fetchCountries';
 
 const DEBOUNCE_DELAY = 300;
-let message
 
 const input = document.getElementById('search-box');
 const countryList = document.querySelector('.country-list');
@@ -35,7 +34,9 @@ function onInput(event) {
       countryInfo.innerHTML = '';
 
       if (data.length === undefined) {
-        throw new Error((message = 'Oops, there is no country with that name'));
+        throw new Error(
+          Notify.failure('Oops, there is no country with that name')
+        );
       } else if (data.length === 1) {
         const markup = data.reduce(
           (markup, country) =>
@@ -69,7 +70,7 @@ function onInput(event) {
         );
       }
     })
-    .catch(error => Notify.failure(message));
+    .catch(error => error);
 }
 
 function creatMarkupList(flag, name) {
